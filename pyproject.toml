@@ -1,6 +1,6 @@
 [project]
 name = "prototypal"
-version = "0.1.0"
+version = "0.1.1"
 description = "Javascript-like prototypes for Python."
 authors = [
     {name = "bitnom", email = "14287229+bitnom@users.noreply.github.com"},
