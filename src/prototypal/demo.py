@@ -83,3 +83,22 @@ assert Person.prototype.__proto__ == Object.prototype
 # should work with lists
 father.children = [son]
 print(len(father.children))  # Output: 1
+
+########################################################
+
+# Usage of the new features
+# Creating a prototype with attributes
+jane = create_prototype(first='Jane', last='Doe')
+
+# Chaining prototypes
+parent_proto = create_prototype(eye_color='blue')
+child_proto = chain_prototypes(parent_proto)
+
+# Cloning a prototype
+clone_jane = clone_prototype(jane)
+
+# Dynamic attribute setting
+jane.middle = 'Ann'
+
+# Representation customization
+print(jane)  # Output: <Proto object at 0x...>
