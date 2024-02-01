@@ -57,18 +57,24 @@ class Object(metaclass=ObjectMetaClass):
         return None
 
     def __setattr__(self, name, val):
-        # Try to get the attribute or property from the prototype
-        prop = _proto_getattr(self, name)
-        if isinstance(prop, property):
-            if prop.fset is not None:
-                # If it's a property with a setter, call the setter
-                prop.fset(self, val)
-            else:
-                # If it's a read-only property, raise an AttributeError
-                raise AttributeError(f"can't set attribute '{name}'")
+        # Check if we're defining a property on the prototype, not on an instance
+        if isinstance(val, property) or not hasattr(self, '__dict__'):
+            # Set the property on the class (which affects the prototype)
+            cls = type(self)
+            setattr(cls, name, val)
         else:
-            # If it's not a property, set the attribute normally
-            object.__setattr__(self, name, val)
+            # Try to get the attribute or property from the prototype
+            prop = _proto_getattr(self, name)
+            if isinstance(prop, property):
+                if prop.fset is not None:
+                    # If it's a property with a setter, call the setter
+                    prop.fset(self, val)
+                else:
+                    # If it's a read-only property, raise an AttributeError
+                    raise AttributeError(f"can't set attribute '{name}'")
+            else:
+                # If it's not a property, set the attribute normally
+                object.__setattr__(self, name, val)
 
     def __delattr__(self, name):
         val = _proto_getattr(self, name)
